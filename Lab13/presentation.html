@@ -1,0 +1,379 @@
+<!doctype html>
+<html>
+  <head>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <title>p_slides</title>
+      <link rel="stylesheet" type="text/css" media="screen, projection, print"
+href="http://zhaw.panter.ch/assets/stylesheets/slidy.css" />
+      <link rel="stylesheet" type="text/css" media="screen"
+href="http://zhaw.panter.ch/assets/stylesheets/style.css" />
+      <link rel="stylesheet" type="text/css" media="screen, print"
+href="http://zhaw.panter.ch/assets/stylesheets/twitter_bootstrap.css" />
+      <link rel="stylesheet" type="text/css" media="screen, print"
+href="http://zhaw.panter.ch/themes/zhaw/zhaw.css" />
+      <script src="http://zhaw.panter.ch/assets/javascripts/showdown/showdown.js"></script>
+      <script src="http://zhaw.panter.ch/assets/javascripts/showdown/extensions/table.js"></script>
+      <script src="http://zhaw.panter.ch/assets/javascripts/slidy.js"></script>
+      <script src="http://zhaw.panter.ch/assets/javascripts/jquery-syntax/jquery-1.4.4.min.js"></script>
+      <script src="http://zhaw.panter.ch/assets/javascripts/jquery-syntax/jquery.syntax.min.js"></script>
+
+      <script>
+        // configure theme variables here
+        var default_footer = "abr • long_title • lecturer • MM/YYYY •"
+      </script>
+  </head>
+  <body>
+
+    <script type="p_slides" class="presentation">
+
+# Canvas
+
+---
+
+# Introduction
+
+* part of HTML5 and
+* dynamic, scriptable rendering of 2D shapes
+* low level model that updates a bitmap
+
+---
+
+# Typical usages
+
+* rendering graphs
+* game graphics
+* work with bitmap images, even uploads
+
+---
+
+# Markup
+
+* &lt;canvas width="300" height="225"&gt;&lt;/canvas&gt;
+
+* All drawings will be programmed in Javascript.
+
+---
+
+# Get context
+
+<pre class='syntax javascript'>
+$('canvas#a').click(function() {
+  var context = this.getContext("2d");
+});
+</pre>
+
+* context is where drawing happens
+* context has to be '2d'
+* a future version of the specification will probably define a 3d context
+
+---
+
+# Properties on context
+
+* The fillStyle property can be a CSS color, a pattern, or a gradient.
+* The default fillStyle is solid black
+* each drawing context remembers its own properties as long as the page is open
+* The strokeStyle property is like fillStyle — it can be a CSS color, a pattern, or a gradient.
+
+---
+
+# Methods on context
+
+* fillRect(x, y, width, height) draws a rectangle filled with the current fill style
+* strokeRect(x, y, width, height) draws an rectangle with the current stroke style.
+* strokeRect doesn’t fill in the middle; it just draws the edges.
+* clearRect(x, y, width, height) clears the pixels in the specified rectangle.
+
+
+---
+
+# Drawing
+
+<pre class='syntax javascript'>
+$('canvas#a').click(function()
+  var context = this.getContext("2d");
+  context.fillRect(50, 25, 150, 100);
+});
+</pre>
+
+<canvas
+   id="a" width="800" height="600"
+   style="display: block; width: 600px; margin: auto; border: 1px dotted"'>
+</canvas>
+
+(click on canvas area to draw)
+
+
+
+---
+
+# Coordinates
+
+* canvas is a two-dimensional grid
+* coordinate (0, 0) is at the upper-left corner of the canvas
+* Along the X-axis, values increase towards the right edge of the canvas
+* Along the Y-axis, values increase towards the bottom edge of the canvas
+
+---
+
+# Paths
+
+## Prepare a path
+
+* moveTo(x, y) moves the pencil to the specified starting point
+* lineTo(x, y) draws a line to the specified ending point
+
+## Draw it
+
+* stroke() takes a complex path defined with moveTo() and lineTo() calls and actually draws it on the canvas
+* strokeStyle controls the color of the lines
+
+---
+
+# Paths example
+
+<pre class='syntax javascript'>
+  for (var x = 0.5; x < this.width; x += 10) {
+    context.moveTo(x, 0);
+    context.lineTo(x, this.height);
+  }
+  for (var y = 0.5; y < this.height; y += 10) {
+    context.moveTo(0, y);
+    context.lineTo(this.width, y);
+  }
+  context.strokeStyle = "#eee";
+  context.stroke();
+</pre>
+
+<canvas
+   id="grid" width="800" height="600"
+   style="display: block; width: 600px; margin: auto; border: 1px dotted"'>
+</canvas>
+
+---
+
+# Why drawing at 0.5 and not 0?
+
+* 1px wide paths are one px wide
+* many screens can’t display half a pixel
+* they expands the line to cover a total of two pixels
+
+<img src='canvas-half-pixels.jpg'
+     style='display: block; margin: auto'
+     alt='canvas drawing a one pixel line'></img>
+
+
+---
+
+# Draw paths of different style
+
+* beginPath - method begins a path, or resets the current path
+* resets most information set on context
+* fillStyle and strokeStyle don’t get reset
+
+---
+
+# Drawing an arrow after the grid
+
+<div style='overflow: hidden'>
+<div style='width: 45%; float: left'>
+<pre class='syntax javascript'>
+  context.beginPath();
+
+  context.moveTo(0,   560);
+  context.lineTo(790, 560);
+  context.moveTo(785, 555);
+  context.lineTo(790, 560);
+  context.lineTo(785, 565);
+</pre>
+</div>
+
+<div style='width: 45%; float: right'>
+<pre class='syntax javascript'>
+  context.moveTo(40, 600);
+  context.lineTo(40, 10);
+  context.moveTo(45, 15);
+  context.lineTo(40, 10);
+  context.lineTo(35, 15);
+
+  context.strokeStyle = "#000";
+  context.stroke();
+</pre>
+</div>
+</div>
+
+<canvas
+   id="arrow" width="800" height="600"
+   style="display: block; width: 600px; margin: auto; border: 1px dotted"'>
+</canvas>
+
+----
+
+# Text
+
+* draw text on a canvas
+* no box model
+* CSS layout techniques are available
+* no floats, no margins, no padding, no word wrapping
+
+----
+
+# Text Properties and Methods
+
+* font can be anything you would put in a CSS font rule
+* includes font style, font variant, font weight, font size, line height, and font family
+* textAlign controls text alignment: start, end, left, right, and center.
+* textBaseline controls where the text is drawn relative to the starting point: top, hanging, middle, alphabetic, ideographic, or bottom
+* For simple alphabets like English, you can safely stick with top, middle, or bottom for the textBaseline property.
+* The fillText() method draws the actual text.
+
+----
+
+# Axis labels
+
+<pre class='syntax javascript'>
+  context.font = "bold 12px sans-serif";
+  context.fillText("x", 760, 580);
+  context.fillText("y", 20, 40);
+</pre>
+
+<canvas
+   id="label" width="800" height="600"
+   style="display: block; width: 600px; margin: auto; border: 1px dotted"'>
+</canvas>
+
+----
+
+# More useful function
+
+* drawImage takes an image and draws it on the canvas
+* arc() method takes a center point (x, y), a radius, a start and end angle (in
+  radians), and a direction flag (false for clockwise, true for counter-clockwise.
+
+<pre class='syntax javascript'>
+// draw a circle
+context.beginPath();
+context.arc(x, y, radius, 0, Math.PI * 2, false);
+context.closePath();
+context.stroke();
+</pre>
+
+* Documentation: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+
+    </script>
+
+    <script>
+      $(".presentation").each(function() {
+        var markup = new Showdown.converter({ extensions: ['table'] }).
+        makeHtml($(this).html());
+      var slides = markup.split('<hr />');
+      for (var j = 0; j < slides.length; j++)
+        document.write('<div class=slide>' + slides[j] + '</div>');
+      });
+      $(".presentation").remove();
+      // if you want to syntax highlight *all* your code in the same way
+      // then you can uncomment and customize the next line
+      //
+      //$("pre>code").parent().addClass("syntax cpp");
+      w3c_slidy.add_listener(document.body, "touchend", w3c_slidy.mouse_button_click);
+      $.syntax();
+
+      // automatic detection for theme javascript so that it can run after
+      // slides have been generated
+      for(i in document.styleSheets) {
+        stylesheet = document.styleSheets[i].href
+        if (stylesheet && stylesheet.indexOf("theme") != -1) {
+          theme = stylesheet.slice(stylesheet.lastIndexOf("/")+1, stylesheet.length);
+        }
+      }
+
+      $('canvas#a').click(function(event) {
+        var context = this.getContext("2d");
+        context.fillRect(360, 270, 80, 60);
+        event.stopPropagation();
+      });
+
+      $('canvas#grid').click(function(event) {
+        var context = this.getContext("2d");
+        for (var x = 0.5; x < this.width; x += 10) {
+          context.moveTo(x, 0);
+          context.lineTo(x, this.height);
+        }
+        for (var y = 0.5; y < this.height; y += 10) {
+          context.moveTo(0, y);
+          context.lineTo(this.width, y);
+        }
+        context.strokeStyle = "#eee";
+        context.stroke();
+        event.stopPropagation();
+      });
+
+      $('canvas#arrow').click(function(event) {
+        var context = this.getContext("2d");
+        for (var x = 0.5; x < this.width; x += 10) {
+          context.moveTo(x, 0);
+          context.lineTo(x, this.height);
+        }
+        for (var y = 0.5; y < this.height; y += 10) {
+          context.moveTo(0, y);
+          context.lineTo(this.width, y);
+        }
+        context.strokeStyle = "#eee";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(0,   560);
+        context.lineTo(790, 560);
+        context.moveTo(785, 555);
+        context.lineTo(790, 560);
+        context.lineTo(785, 565);
+
+        context.moveTo(40, 600);
+        context.lineTo(40, 10);
+        context.moveTo(45, 15);
+        context.lineTo(40, 10);
+        context.lineTo(35, 15);
+
+        context.strokeStyle = "#000";
+        context.stroke();
+        event.stopPropagation();
+      });
+
+      $('canvas#label').click(function(event) {
+        var context = this.getContext("2d");
+        for (var x = 0.5; x < this.width; x += 10) {
+          context.moveTo(x, 0);
+          context.lineTo(x, this.height);
+        }
+        for (var y = 0.5; y < this.height; y += 10) {
+          context.moveTo(0, y);
+          context.lineTo(this.width, y);
+        }
+        context.strokeStyle = "#eee";
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(0,   560);
+        context.lineTo(790, 560);
+        context.moveTo(785, 555);
+        context.lineTo(790, 560);
+        context.lineTo(785, 565);
+
+        context.moveTo(40, 600);
+        context.lineTo(40, 10);
+        context.moveTo(45, 15);
+        context.lineTo(40, 10);
+        context.lineTo(35, 15);
+
+        context.strokeStyle = "#000";
+        context.stroke();
+
+        context.font = "bold 12px sans-serif";
+        context.fillText("x", 760, 580);
+        context.fillText("y", 20, 40);
+        event.stopPropagation();
+      });
+    </script>
+
+  </body>
+</html>

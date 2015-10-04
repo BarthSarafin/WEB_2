@@ -1,0 +1,29 @@
+1. Dekomposition des Problemes in Tasks - Dekomposition des Problemes in Tests
+
+2. Erstellen einer Methoden Signatur (Eingabeparameter String creditCardNo,
+Rueckgabewert boolen) - Eine Methode zur Validierung von Kreditkartennummern
+ist aufrufbar
+
+3. Eingabeparameter auf null überprüfen und wenn dies zutrifft false zurückgeben
+- Wird die Methode mit null als Eingabeparameter aufgerufen gibt
+sie false zurück
+
+4. Eingabeparameter auf leeren String überprüfen und wenn dies zutrifft false
+zurückgeben - Sollte die Methode mit null als Eingabeparameter aufgerufen werden, gibt sie false zurück
+
+5. Die Eingabeparameter sollen gesplittet werden und in einer Tabelle abgelegt werden
+
+6. Anschliessend sollen die ersten 4 Indizes mit einer Tabelle von möglichen Ziffern überprüft werden,
+welche den 4 Ziffern der Kreditkartengesellschaft entsprechen
+
+7. Weiter soll der 4. Index, also die 5. Ziffer auf die Art der Karte geprüft werden. Z.B. 1 blau, 2 grün,
+3 gold, 4 platin etc
+
+8. Der 5. Index überprüft schliesslich ob es sich um eine Spezialkarte, wie Zweit- oder Firmenkarte handelt.
+
+9. Die letzten zehn Ziffern werden herausgelesen und in einem String gespeichert.
+
+10. Zum Schluss soll eine Ausgabe erfolgen, welche:
+	Die Kreditkartengesellschaft,
+	Die Art der Karte,
+	Die Spezialisierung der Karte und die Kontonummer ausgibt.
